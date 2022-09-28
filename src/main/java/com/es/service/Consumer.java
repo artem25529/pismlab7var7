@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.concurrent.TimeUnit;
 
 @MessageDriven(mappedName = "jms/dest", activationConfig = {
         @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge"),
@@ -25,10 +26,15 @@ public class Consumer implements MessageListener {
         TextMessage textMessage = (TextMessage) message;
         try {
             String text = textMessage.getText();
-            if (text.endsWith("!")) {
+
+            /*if (text.endsWith("!")) {
                 Files.write(PATH, (text + '\n').getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND);
-            }
-        } catch (JMSException | IOException e) {
+            }*/
+
+            System.out.println(text);
+
+            TimeUnit.MILLISECONDS.sleep(1);
+        } catch (JMSException | InterruptedException /*| IOException*/ e) {
             e.printStackTrace();
         }
     }
